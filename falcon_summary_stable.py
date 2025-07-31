@@ -270,6 +270,7 @@ def make_summary_with_falcon(qa_text: str) -> str:
     # Avoid degenerate "The patient reports." etc.
     if re.fullmatch(r"The patient reports[\.!?]?", summary):
         return ""
+
     return summary if summary.endswith((".", "!", "?")) else summary + "."
 
 def ensure_list(x) -> List[str]:
@@ -301,6 +302,10 @@ def extract_lifestyle_handler():
         # Summary (Falcon, use 2nd run)
         qa_text = convert_history_to_qa(conversation_history)
         summary = make_summary_with_falcon(qa_text)
+
+        # --- simple fix: change “doctor” → “patient” ---
+        if "doctor" in summary.lower():                 # case-insensitive check
+            summary = re.sub(r"\bdoctor\b", "patient", summary, flags=re.I)
 
         # Lifestyle factors (regex, strict with negation)
         lifestyle = extract_lifestyle_factors(conversation_history)
