@@ -73,6 +73,7 @@ Avoid headings, quotes, or extra labels. Output one concise paragraph.
 If no elaborate or sufficient descriptions found, don't add this line: There is no other information provided that could help diagnose the issue
 Ignore sentences that don't have English words or are written in other languages. Do not extract lifestyle factors from non-English text or phonetically written Hindi.
 Avoid adding any sentences with the word **Doctor** or **doctor**
+Don't diagnose anything
 
 Q&A:
 {qa}
