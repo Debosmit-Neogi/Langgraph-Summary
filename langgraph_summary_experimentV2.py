@@ -68,25 +68,25 @@ class LocalLLM:
     # Count number of Q&A turns
         num_turns = prompt.count("Doctor:")
 
-        # Dynamically adjust max_new_tokens based on conversation length
-        if num_turns <= 2:
-            adjusted_tokens = 64
-        elif num_turns <= 4:
-            adjusted_tokens = 128
-        else:
-            adjusted_tokens = max_new_tokens
+        # # Dynamically adjust max_new_tokens based on conversation length
+        # if num_turns <= 2:
+        #     adjusted_tokens = 64
+        # elif num_turns <= 4:
+        #     adjusted_tokens = 128
+        # else:
+        #     adjusted_tokens = max_new_tokens
 
         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.model.device)
 
         with torch.no_grad():
             out = self.model.generate(
                 **inputs,
-                max_new_tokens=adjusted_tokens,
+                max_new_tokens=256,
                 repetition_penalty=1.1,
                 no_repeat_ngram_size=3,
-                do_sample=False,
-                #temperature=0.7,
-                #top_p=0.9,
+                do_sample=True,
+                temperature=0.3,
+                top_p=0.8,
                 num_return_sequences=1,
                 pad_token_id=self.tokenizer.pad_token_id,
                 eos_token_id=self.tokenizer.eos_token_id,
